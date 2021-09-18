@@ -1,61 +1,36 @@
+using System;
 
-class Weapon
+namespace Weapon
 {
-    private readonly int _damage;
-    private int _bullets;
-
-    public Weapon(int damage, int bullets)
+    public class Weapon
     {
-        _damage = damage;
-        _bullets = bullets;
-    }
+        private readonly int _damage;
+        private readonly int _projectilesPerShot;
+        private readonly Ammo _ammo;
 
-    public void Fire(Player player)
-    {
-        if (_bullets <= 0)
+        public Weapon(int damage, Ammo ammo, int projectilesPerShot)
         {
-            throw new ArgumentOutOfRangeException();
+            _damage = damage;
+            _ammo = ammo;
+            _projectilesPerShot = projectilesPerShot;
         }
 
-        player.Health -= _damage;
-        _bullets -= 1;
-    }
-}
+        public bool IsReadyToShoot => _ammo.CanEject;
 
-class Player
-{
-    private int _health;
-
-    public Player(int health)
-    {
-        _health = health;
-    }
-
-    public int Health
-    {
-        get
+        public void Fire(Player player)
         {
-            return _health;
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            if (!player.IsAlive)
+                throw new InvalidOperationException();
+
+            if (!IsReadyToShoot)
+                throw new InvalidOperationException();
+
+            _ammo.Eject(_projectilesPerShot);
+            int finalDamage = _damage * _projectilesPerShot;
+            player.TakeDamage(finalDamage);
         }
-
-        set
-        {
-            _health = value;
-
-            if (Health < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-        }
-    }
-}
-
-class Bot
-{
-    public Weapon Weapon;
-
-    public void OnSeePlayer(Player player)
-    {
-        Weapon.Fire(player);
     }
 }

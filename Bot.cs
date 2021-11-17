@@ -16,7 +16,10 @@ namespace Weapon
 
         public void OnSeePlayer(Player player)
         {
-            if(_weapon.IsReadyToShoot && player.IsAlive)
+            if (!player.IsAlive)
+                throw new InvalidOperationException();
+
+            if (_weapon.CanFire)
                 _weapon.Fire(player);
         }
     }

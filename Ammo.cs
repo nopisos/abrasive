@@ -4,27 +4,32 @@ namespace Weapon
 {
     public class Ammo
     {
-        private int _quantity;
+        private int _amount;
 
-        public Ammo(int quantity)
+        public Ammo(int amount)
         {
-            if (quantity < 0)
-                throw new ArgumentOutOfRangeException(nameof(quantity));
+            if (amount < 0)
+                throw new ArgumentOutOfRangeException(nameof(amount));
 
-            _quantity = quantity;
+            _amount = amount;
         }
 
-        public bool CanEject => _quantity > 0;
+        public bool CanEject => _amount > 0;
 
-        public void Eject(int projectilesPerShot)
+        public int GetPossibleProjectiles(int projectilesQuantity)
         {
-            if (_quantity < 0)
+            if (_amount < 0)
                 throw new InvalidOperationException();
 
-            if (_quantity - projectilesPerShot < 0)
-                _quantity = 0;
-            else
-                _quantity -= projectilesPerShot;
+            if (_amount - projectilesQuantity < 0)
+            {
+                int requiredProjectiles = _amount;
+                _amount = 0;
+                return requiredProjectiles;
+            }
+                
+            _amount -= projectilesQuantity;
+            return projectilesQuantity;
         }
     }
 }

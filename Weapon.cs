@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Weapon
 {
@@ -15,21 +15,18 @@ namespace Weapon
             _projectilesPerShot = projectilesPerShot;
         }
 
-        public bool IsReadyToShoot => _ammo.CanEject;
+        public bool CanFire => _ammo.CanEject;
 
         public void Fire(Player player)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            if (!player.IsAlive)
+            if (!CanFire)
                 throw new InvalidOperationException();
-
-            if (!IsReadyToShoot)
-                throw new InvalidOperationException();
-
-            _ammo.Eject(_projectilesPerShot);
-            int finalDamage = _damage * _projectilesPerShot;
+            
+            int possibleProjectiles = _ammo.GetPossibleProjectiles(_projectilesPerShot);
+            int finalDamage = _damage * possibleProjectiles;
             player.TakeDamage(finalDamage);
         }
     }

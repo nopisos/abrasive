@@ -17,12 +17,12 @@ namespace Shop
         public Good Good { get; private set; }
         public int Count { get; private set; }
 
-        public void Merge(StackedGood stackedGood)
+        public void Add(Good good, int count)
         {
-            if (Good != stackedGood.Good)
+            if (Good != good)
                 throw new InvalidOperationException();
 
-            Count += stackedGood.Count;
+            Count += count;
         }
     }
 }

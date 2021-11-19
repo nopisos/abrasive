@@ -2,20 +2,11 @@
 
 namespace Shop
 {
-    public class Shop
+    public static class WarehouseExtentions
     {
-        private readonly Warehouse _warehouse;
-
-        public Shop(Warehouse warehouse)
+        public static Cart Cart(this Warehouse warehouse)
         {
-            _warehouse = warehouse ?? throw new ArgumentNullException(nameof(warehouse));
-        }
-
-        public bool GoodsCountAvailable(Good good, int count) => _warehouse.IsGoodsCountAvailable(good, count);
-
-        public Cart Cart()
-        {
-            return new Cart(this);
+            return new Cart(warehouse);
         }
     }
 }

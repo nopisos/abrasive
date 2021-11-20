@@ -13,6 +13,7 @@ namespace Logging
 
         public void Write(string message)
         {
+            Console.WriteLine(message);
             _logger.Write(message);
         }
     }

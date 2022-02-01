@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Shop
 {
@@ -16,7 +17,7 @@ namespace Shop
             StackedGood stackedGood = _goods.FirstOrDefault(stacked => stacked.Good == good);
 
             if(stackedGood != null)
-                stackedGood.Add(new StackedGood(good, count));
+                stackedGood.Add(good, count);
             else
                 _goods.Add(new StackedGood(good, count));
         }
@@ -32,6 +33,16 @@ namespace Shop
                 return stackedGood.Count >= count;
             else
                 return false;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            foreach (var stackedGood in _goods)
+                builder.AppendLine(stackedGood.ToString());
+
+            return builder.ToString();
         }
     }
 }
